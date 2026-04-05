@@ -1,0 +1,21 @@
+//@version=5
+strategy("3 Red Strategy (Exportable)", overlay=true)
+
+red = close < open
+upclose = close > close[1]
+
+var int count = 0
+
+if red
+    count += 1
+else
+    count := 0
+
+entry = count == 3 and strategy.position_size == 0
+exit = strategy.position_size > 0 and upclose
+
+if entry
+    strategy.entry("BUY", strategy.long)
+
+if exit
+    strategy.close("BUY")

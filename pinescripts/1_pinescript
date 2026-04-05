@@ -1,0 +1,25 @@
+//@version=5
+indicator("3 Red Strategy (Daily Check)", overlay=true)
+
+red = close < open
+upclose = close > close[1]
+
+var int count = 0
+var bool inTrade = false
+
+if red
+    count += 1
+else
+    count := 0
+
+entry = (count == 3) and not inTrade
+exit = inTrade and upclose
+
+if entry
+    inTrade := true
+
+if exit
+    inTrade := false
+
+plotshape(entry, location=location.belowbar, color=color.green, style=shape.labelup, text="BUY")
+plotshape(exit, location=location.abovebar, color=color.red, style=shape.labeldown, text="SELL")
